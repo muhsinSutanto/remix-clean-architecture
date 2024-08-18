@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 import { apiClient } from "../../api/client";
 import { MenuResponse, Menu, isMenuResponse } from "./types";
+import UserApi from "./api/user";
+import { useParams } from "@remix-run/react";
 
 export default function Index() {
   const [menu, setMenu] = useState<Menu[] | null>(null);
+
   const getData = () => {
-    apiClient
-      .get<MenuResponse>("/users")
-      .then((res: unknown) => {
-        const response = res as MenuResponse;
-        setMenu(response.data.data);
+    UserApi.getUsers()
+      .then((res) => {
+        setMenu(res);
       })
       .catch((error) => console.log(error));
   };
